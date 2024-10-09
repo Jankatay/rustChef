@@ -1,23 +1,21 @@
-use clap::Parser;
-
-#[derive(Parser, Debug)]
-#[command(version, about, long_about=None)]
-struct Args {
-    #[arg(short = 'e', long = "encode")]
-    encode: bool,
-    #[arg(short = 'd', long = "decode")]
-    decode: bool,
-    #[arg(short = 'i', long = "info")]
-    info: bool,
-
-    message: String,
-}
+#![allow(non_snake_case)]
 
 pub fn main() {
-    let args: Args = Args::parse();
-    if args.encode && args.decode {
-        eprintln!("You can't encode and decode at the same time");
-        std::process::exit(1);
+    let bitVec : Vec<u8> = bitVector("hello, world");
+    for i in bitVec {
+        print!("0{:b}", i);
     }
-    println!("Message:\t{}", args.message);
+}
+
+fn bitVector(targetString : &str) -> Vec<u8> {
+    let mut bitVec : Vec<u8> = Vec::new();
+    
+    for character in str::chars(targetString) {
+        let charAscii : u8 = character as u8; 
+        for i in (0..8).rev() {
+            Vec::push(&mut bitVec, (charAscii>>i) & 1);
+        }
+    }
+    
+    return bitVec;
 }
